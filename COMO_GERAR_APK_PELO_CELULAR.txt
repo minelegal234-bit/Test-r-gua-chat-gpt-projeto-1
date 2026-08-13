@@ -1,0 +1,29 @@
+COMO GERAR O APK PELO CELULAR
+
+Este pacote foi preparado para você gerar o APK sem Android Studio e sem AndroidIDE.
+O processo usa o GitHub Actions para compilar o projeto na nuvem.
+
+1) Crie uma conta no GitHub, caso não tenha.
+2) Crie um repositório novo, por exemplo: regua-flutuante.
+3) No repositório, escolha "Add file" > "Upload files".
+4) Descompacte este ZIP e envie TODOS os arquivos e pastas para o repositório.
+5) Faça o commit.
+6) Abra a aba "Actions".
+7) Entre em "Gerar APK".
+8) Se aparecer "Run workflow", toque nele e confirme.
+9) Espere o processo terminar com um check verde.
+10) Abra a execução concluída e procure "Artifacts".
+11) Baixe "ReguaFlutuante-debug".
+12) Dentro do ZIP estará o app-debug.apk.
+
+No Android, ao instalar o APK, talvez seja necessário permitir a instalação de apps
+de fontes desconhecidas para o navegador/gerenciador de arquivos usado.
+
+Depois de instalar:
+- Abra "Régua Flutuante".
+- Permita "Exibir sobre outros apps".
+- Toque em "Iniciar régua".
+- A régua ficará sobre outros aplicativos.
+- Use -/+ para redimensionar e -5/+5 para girar.
+
+O app é uma régua flutuante genérica para uso sobre outros aplicativos.
