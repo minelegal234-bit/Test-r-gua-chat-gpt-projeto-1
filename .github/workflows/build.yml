@@ -13,17 +13,76 @@ jobs:
       - name: Baixar projeto
         uses: actions/checkout@v4
 
+      - name: Organizar projeto Android
+        run: |
+          mkdir -p app/src/main/java/com/example/reguaflutuante
+          mkdir -p app/src/main/res/values
+
+          mv AndroidManifest.xml app/src/main/AndroidManifest.xml
+          mv MainActivity.java app/src/main/java/com/example/reguaflutuante/MainActivity.java
+          mv OverlayService.java app/src/main/java/com/example/reguaflutuante/OverlayService.java
+          mv styles.xml app/src/main/res/values/styles.xml
+          mv strings.xml app/src/main/res/values/strings.xml
+
+          cat > settings.gradle <<'EOF'
+          pluginManagement {
+              repositories {
+                  google()
+                  mavenCentral()
+                  gradlePluginPortal()
+              }
+          }
+
+          dependencyResolutionManagement {
+              repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+              repositories {
+                  google()
+                  mavenCentral()
+              }
+          }
+
+          rootProject.name = 'ReguaFlutuanteAndroid'
+          include ':app'
+          EOF
+
+          cat > build.gradle <<'EOF'
+          plugins {
+              id 'com.android.application' version '8.6.1' apply false
+          }
+          EOF
+
+          cat > app/build.gradle <<'EOF'
+          plugins {
+              id 'com.android.application'
+          }
+
+          android {
+              namespace 'com.example.reguaflutuante'
+              compileSdk 35
+
+              defaultConfig {
+                  applicationId 'com.example.reguaflutuante'
+                  minSdk 26
+                  targetSdk 35
+                  versionCode 1
+                  versionName '1.0'
+              }
+          }
+          EOF
+
       - name: Configurar Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
 
-      - name: Configurar Android
+      - name: Configurar Android SDK
         uses: android-actions/setup-android@v3
 
       - name: Instalar SDK
-        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+        run: |
+          yes | sdkmanager --licenses || true
+          sdkmanager "platforms;android-35" "build-tools;35.0.0"
 
       - name: Configurar Gradle
         uses: gradle/actions/setup-gradle@v4
@@ -33,7 +92,7 @@ jobs:
       - name: Compilar APK
         run: gradle assembleDebug --no-daemon
 
-      - name: Salvar APK
+      - name: Disponibilizar APK
         uses: actions/upload-artifact@v4
         with:
           name: ReguaFlutuante-debug
